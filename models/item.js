@@ -1,0 +1,31 @@
+const Joi = require("joi");
+const mongoose = require("mongoose");
+
+const schema = new mongoose.Schema({
+  vendor_id: { type: Number, },
+  vendor_name: { type: String, },
+  name: { type: String, },
+  price: { type: Number, },
+  photo: { type: String, },
+  unit: { type: String, },
+  description: { type: String, },
+});
+
+const Item = mongoose.model("Item", schema);
+
+function validateItem(item) {
+  const schema = Joi.object({
+    vendor_id: Joi.number(),
+    vendor_name: Joi.string(),
+    name: Joi.string(),
+    price: Joi.number(),
+    photo: Joi.string(),
+    unit: Joi.string(),
+    description: Joi.string(),
+  });
+
+  return schema.validate(item);
+}
+
+exports.Item = Item;
+exports.validateItem = validateItem;
