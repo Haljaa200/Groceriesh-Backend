@@ -19,7 +19,6 @@
     "express-async-errors": "^3.1.1",
     "express-fileupload": "^1.2.1",
     "helmet": "^4.6.0",
-    "jalali-date": "^1.1.4",
     "joi": "^17.4.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
