@@ -2,9 +2,10 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
-  customer_id: { type: Number, },
+  customer_id: { type: String, },
   delivery_latitude: { type: Number, },
   delivery_longitude: { type: Number, },
+  delivery_address: { type: String, },
   items: [
     {
       name: { type: String, },
@@ -15,19 +16,31 @@ const schema = new mongoose.Schema({
     }
   ],
   total_price: { type: Number, },
-  delivery_address: { type: Number, },
   delivery_time_planned: { type: Number, },
   delivery_time: { type: Number, },
-  notes: { type: Number, },
+  notes: { type: String, },
 });
 
 const Order = mongoose.model("Order", schema);
 
 function validateOrder(order) {
   const schema = Joi.object({
-    item_id: Joi.number(),
-    quantity: Joi.number(),
+    customer_id: Joi.string(),
+    delivery_latitude: Joi.number(),
+    delivery_longitude: Joi.number(),
+    delivery_address: Joi.string(),
+    items: Joi.array().items(
+      Joi.object().keys({
+        name: Joi.string(),
+        price: Joi.number(),
+        unit: Joi.string(),
+        quantity: Joi.number(),
+      })
+    ),
     total_price: Joi.number(),
+    delivery_time_planned: Joi.number(),
+    delivery_time: Joi.number(),
+    notes: Joi.string(),
   });
 
   return schema.validate(order);

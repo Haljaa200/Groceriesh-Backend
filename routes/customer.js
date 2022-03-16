@@ -1,11 +1,13 @@
 const { statusResponse } = require("../utils/tools");
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const express = require("express");
 const auth = require("../middleware/auth");
 const { validateCustomer, Customer } = require("../models/customer");
 const { validateOrder, Order } = require("../models/order");
-const {Item} = require("../models/item");
+const { Item } = require("../models/item");
 const router = express.Router();
+
+// ---------- Customer User Login, Register and Edit profile ----------
 
 router.post('/login', async (req, res) => {
   const { error } = validateCustomer(req.body);
@@ -18,7 +20,7 @@ router.post('/login', async (req, res) => {
   if (!validPassword) return res.status(400).send(statusResponse(false, 'Invalid email or password.'));
 
   const token = customer.generateAuthToken();
-  res.send(token);
+  res.send(statusResponse(false, {token: token}));
 });
 
 router.post("/register", async (req, res) => {
@@ -44,7 +46,7 @@ router.put("/profile", auth, async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(statusResponse(false, error.details[0].message));
 
-  let customer = await Customer.findOne({ _id: req.body._id });
+  let customer = await Customer.findOne({ _id: req.user._id });
 
   if (!customer) return res.status(404).send(statusResponse(false, "Customer not found!"));
 
@@ -58,13 +60,20 @@ router.put("/profile", auth, async (req, res) => {
   res.send(statusResponse(true, { item: customer }));
 });
 
+
+
 router.get("/items", auth, async (req, res) => {
   let items = await Item.find();
   res.send(statusResponse(true, {items: items}));
 });
 
-router.get("/items/:vendor_id", auth, async (req, res) => {
+router.get("/vendor_items/:vendor_id", auth, async (req, res) => {
   let items = await Item.find({ vendor_id: req.params.vendor_id});
+  res.send(statusResponse(true, {items: items}));
+});
+
+router.get("/category_items/:category_id", auth, async (req, res) => {
+  let items = await Item.find({ category_id: req.params.category_id});
   res.send(statusResponse(true, {items: items}));
 });
 
