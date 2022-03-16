@@ -5,7 +5,10 @@ const auth = require("../middleware/auth");
 const { validateCustomer, Customer } = require("../models/customer");
 const { validateOrder, Order } = require("../models/order");
 const { Item } = require("../models/item");
+const { Vendor } = require("../models/vendor");
 const router = express.Router();
+const _ = require("lodash");
+const { ObjectId } = require('mongodb');
 
 // ---------- Customer User Login, Register and Edit profile ----------
 
@@ -68,13 +71,20 @@ router.get("/items", auth, async (req, res) => {
 });
 
 router.get("/vendor_items/:vendor_id", auth, async (req, res) => {
-  let items = await Item.find({ vendor_id: req.params.vendor_id});
+  const id = ObjectId(req.params.vendor_id)
+  let items = await Item.find({ vendor_id: id});
   res.send(statusResponse(true, {items: items}));
 });
 
 router.get("/category_items/:category_id", auth, async (req, res) => {
-  let items = await Item.find({ category_id: req.params.category_id});
+  const id = ObjectId(req.params.category_id)
+  let items = await Item.find({ category_id: id});
   res.send(statusResponse(true, {items: items}));
+});
+
+router.get("/vendors", auth, async (req, res) => {
+  let vendors = await Vendor.find();
+  res.send(statusResponse(true, {vendors: _.map(vendors, row => _.pick(row, "store_name", "store_phone", "longitude", "latitude", "address"))}));
 });
 
 router.post("/order", async (req, res) => {

@@ -1,4 +1,4 @@
-const { statusResponse } = require("../utils/tools");
+const { statusResponse, saveFileToPublicDir } = require("../utils/tools");
 const bcrypt = require('bcryptjs');
 const express = require("express");
 const auth = require("../middleware/auth");
@@ -8,6 +8,8 @@ const { Order } = require("../models/order");
 const { validateUnit, Unit } = require("../models/unit");
 const { validateCategory, Category } = require("../models/category");
 const router = express.Router();
+const { ObjectId } = require('mongodb');
+
 
 // ---------- Vendor User Login, Register and Edit profile ----------
 
@@ -99,7 +101,8 @@ router.put("/item", auth, async (req, res) => {
 });
 
 router.delete("/item/:id", auth, async (req, res) => {
-  const item = await Item.findOneAndRemove({ _id: req.params.id });
+  const id = ObjectId(req.params.id)
+  const item = await Item.findOneAndRemove({ _id: id });
 
   if (!item)
     return res
@@ -112,6 +115,31 @@ router.delete("/item/:id", auth, async (req, res) => {
 });
 
 
+router.post("/item_image/:item_id", auth, async (req, res) => {
+  const file = req.files.file;
+  const id = ObjectId(req.params.item_id)
+  let item = await Item.findOne({ _id: id });
+
+  try {
+    if (file == undefined) {
+      return res.status(400).send(statusResponse(400, "File not found!"));
+    }
+
+    await saveFileToPublicDir(file);
+
+    res
+      .status(200)
+      .send(
+        statusResponse(true, "Uploaded the file successfully: " + file.name)
+      );
+  } catch (err) {
+    res
+      .status(500)
+      .send(
+        statusResponse(false, `Could not upload the file: ${file.name}. ${err}`)
+      );
+  }
+});
 
 
 // ---------- Save and delete unit ----------
@@ -130,7 +158,8 @@ router.post("/unit", async (req, res) => {
 });
 
 router.delete("/unit/:id", auth, async (req, res) => {
-  const unit = await Unit.findOneAndRemove({ _id: req.params.id });
+  const id = ObjectId(req.params.id)
+  const unit = await Unit.findOneAndRemove({ _id: id });
 
   if (!unit)
     return res
@@ -161,7 +190,8 @@ router.post("/category", async (req, res) => {
 });
 
 router.delete("/category/:id", auth, async (req, res) => {
-  const category = await Category.findOneAndRemove({ _id: req.params.id });
+  const id = ObjectId(req.params.id)
+  const category = await Category.findOneAndRemove({ _id: id });
 
   if (!category)
     return res
@@ -177,7 +207,8 @@ router.delete("/category/:id", auth, async (req, res) => {
 
 
 router.post("/accept_order/:order_id", async (req, res) => {
-  let order = await Order.findOne({ _id: req.params.order_id });
+  const id = ObjectId(req.params.order_id)
+  let order = await Order.findOne({ _id: id });
   order.delivery_time_planned = req.body.delivery_time_planned
   await order.save()
 
@@ -185,7 +216,7 @@ router.post("/accept_order/:order_id", async (req, res) => {
 });
 
 router.post("/deliver_order/:order_id", async (req, res) => {
-  let order = await Order.findOne({ _id: req.params.order_id });
+  let order = await Order.findOne({ _id: id });
   order.delivery_time = req.body.delivery_time
   await order.save()
 

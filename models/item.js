@@ -2,7 +2,7 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
-  vendor_id: { type: Number, },
+  vendor_id: { type: String, },
   category_id: { type: String, },
   name: { type: String, },
   price: { type: Number, },
