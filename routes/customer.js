@@ -20,7 +20,7 @@ router.post('/login', async (req, res) => {
   if (!customer) return res.status(200).send(statusResponse(false, 'Invalid email or password.'));
 
   const validPassword = await bcrypt.compare(req.body.password, customer.password);
-  if (!validPassword) return res.status(400).send(statusResponse(false, 'Invalid email or password.'));
+  if (!validPassword) return res.status(200).send(statusResponse(false, 'Invalid email or password.'));
 
   const token = customer.generateAuthToken();
   res.send(statusResponse(true, {token: token, customer: _.pick(customer, "_id", "first_name", "last_name", "delivery_address", "email", "latitude", "longitude", "phone")}));
