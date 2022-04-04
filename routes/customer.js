@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
   if (!validPassword) return res.status(400).send(statusResponse(false, 'Invalid email or password.'));
 
   const token = customer.generateAuthToken();
-  res.send(statusResponse(false, {token: token, customer: customer}));
+  res.send(statusResponse(false, {token: token, customer: _.pick(customer, "_id", "first_name", "last_name", "delivery_address", "email", "latitude", "longitude", "phone")}));
 });
 
 router.post("/register", async (req, res) => {
@@ -39,10 +39,7 @@ router.post("/register", async (req, res) => {
   await customer.save();
 
   const token = customer.generateAuthToken();
-  res
-      .header("x-auth-token", token)
-      .header("access-control-expose-headers", "x-auth-token")
-      .send(statusResponse(true, {customer: customer}));
+  res.send(statusResponse(true, {token: token, customer: _.pick(customer, "_id", "first_name", "last_name", "delivery_address", "email", "latitude", "longitude", "phone")}));
 });
 
 router.put("/profile", auth, async (req, res) => {
@@ -60,7 +57,7 @@ router.put("/profile", auth, async (req, res) => {
 
   customer.save();
 
-  res.send(statusResponse(true, { item: customer }));
+  res.send(statusResponse(true, { customer:  _.pick(customer, "_id", "first_name", "last_name", "delivery_address", "email", "latitude", "longitude", "phone")}));
 });
 
 
