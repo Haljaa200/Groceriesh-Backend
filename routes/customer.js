@@ -17,7 +17,7 @@ router.post('/login', async (req, res) => {
   if (error) return res.status(400).send(statusResponse(false, error.details[0].message));
 
   let customer = await Customer.findOne({ email: req.body.email });
-  if (!customer) return res.status(400).send(statusResponse(false, 'Invalid email or password.'));
+  if (!customer) return res.status(200).send(statusResponse(false, 'Invalid email or password.'));
 
   const validPassword = await bcrypt.compare(req.body.password, customer.password);
   if (!validPassword) return res.status(400).send(statusResponse(false, 'Invalid email or password.'));
@@ -31,7 +31,7 @@ router.post("/register", async (req, res) => {
   if (error) return res.status(400).send(statusResponse(false, error.details[0].message));
 
   let customer = await Customer.findOne({ email: req.body.email });
-  if (customer) return res.status(400).send(statusResponse(false, "Customer already registered."));
+  if (customer) return res.status(200).send(statusResponse(false, "Customer already registered."));
 
   customer = new Customer(req.body);
   const salt = await bcrypt.genSalt(10);
