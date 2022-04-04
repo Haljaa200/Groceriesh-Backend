@@ -23,7 +23,7 @@ router.post('/login', async (req, res) => {
   if (!validPassword) return res.status(400).send(statusResponse(false, 'Invalid email or password.'));
 
   const token = customer.generateAuthToken();
-  res.send(statusResponse(false, {token: token, customer: _.pick(customer, "_id", "first_name", "last_name", "delivery_address", "email", "latitude", "longitude", "phone")}));
+  res.send(statusResponse(true, {token: token, customer: _.pick(customer, "_id", "first_name", "last_name", "delivery_address", "email", "latitude", "longitude", "phone")}));
 });
 
 router.post("/register", async (req, res) => {
