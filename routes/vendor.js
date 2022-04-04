@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
   if (!validPassword) return res.status(400).send(statusResponse(false, 'Invalid email or password.'));
 
   const token = vendor.generateAuthToken();
-  res.send(statusResponse(false, {token: token}));
+  res.send(statusResponse(false, {token: token, vendor: _.pick(vendor, "_id", "store_name", "owner_name", "email", "phone", "store_phone", "latitude", "longitude", "address")}));
 });
 
 router.post("/register", async (req, res) => {
@@ -40,10 +40,7 @@ router.post("/register", async (req, res) => {
   await vendor.save();
 
   const token = vendor.generateAuthToken();
-  res
-      .header("x-auth-token", token)
-      .header("access-control-expose-headers", "x-auth-token")
-      .send(statusResponse(true, {vendor: vendor}));
+  res.send(statusResponse(true, {token: token, vendor: _.pick(vendor, "_id", "store_name", "owner_name", "email", "phone", "store_phone", "latitude", "longitude", "address")}));
 });
 
 router.put("/profile", auth, async (req, res) => {
@@ -61,7 +58,7 @@ router.put("/profile", auth, async (req, res) => {
 
   vendor.save();
 
-  res.send(statusResponse(true, { vendor: vendor }));
+  res.send(statusResponse(true, { vendor: _.pick(vendor, "_id", "store_name", "owner_name", "email", "phone", "store_phone", "latitude", "longitude", "address")}));
 });
 
 
