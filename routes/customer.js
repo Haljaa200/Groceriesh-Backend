@@ -4,6 +4,7 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const { validateCustomer, Customer } = require("../models/customer");
 const { validateOrder, Order } = require("../models/order");
+const { Category } = require("../models/category");
 const { Item } = require("../models/item");
 const { Vendor } = require("../models/vendor");
 const router = express.Router();
