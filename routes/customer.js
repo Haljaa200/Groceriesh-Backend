@@ -57,7 +57,7 @@ router.put("/profile", auth, async (req, res) => {
 
   customer.save();
 
-  res.send(statusResponse(true, { customer:  _.pick(customer, "_id", "first_name", "last_name", "delivery_address", "email", "latitude", "longitude", "phone")}));
+  res.send(statusResponse(true, { customer: _.pick(customer, "_id", "first_name", "last_name", "delivery_address", "email", "latitude", "longitude", "phone")}));
 });
 
 
