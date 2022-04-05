@@ -94,4 +94,9 @@ router.post("/order", async (req, res) => {
   res.send(statusResponse(true, {order: order}));
 });
 
+router.get("/categories", auth, async (req, res) => {
+  let categories = await Category.find();
+  res.send(statusResponse(true, {categories: categories}));
+});
+
 module.exports = router;
