@@ -40,7 +40,7 @@ function validateOrder(order) {
     total_price: Joi.number(),
     delivery_time_planned: Joi.number(),
     delivery_time: Joi.number(),
-    notes: Joi.string(),
+    notes: Joi.string().allow(''),
   });
 
   return schema.validate(order);

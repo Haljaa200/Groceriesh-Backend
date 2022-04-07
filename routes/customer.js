@@ -92,10 +92,7 @@ router.get("/vendors", auth, async (req, res) => {
 
 router.post("/order", async (req, res) => {
   const { error } = validateOrder(req.body);
-  if (error) {
-    console.log(error.details[0].message)
-    return res.status(400).send(statusResponse(false, error.details[0].message));
-  }
+  if (error) return res.status(400).send(statusResponse(false, error.details[0].message));
 
   let order = new Order(req.body);
   await order.save();
