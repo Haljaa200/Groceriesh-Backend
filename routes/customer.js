@@ -71,7 +71,7 @@ router.get("/items", auth, async (req, res) => {
 router.get("/vendor_items/:vendor_id/:category_id", auth, async (req, res) => {
   const id = ObjectId(req.params.vendor_id)
   let items;
-  if (req.params.category_id !== "") {
+  if (req.params.category_id !== "0") {
     items = await Item.find({ vendor_id: id, category_id: req.params.category_id });
   } else {
     items = await Item.find({ vendor_id: id });
