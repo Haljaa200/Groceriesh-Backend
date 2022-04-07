@@ -82,7 +82,7 @@ router.get("/category_items/:category_id", auth, async (req, res) => {
 
 router.get("/vendors", auth, async (req, res) => {
   let vendors = await Vendor.find();
-  res.send(statusResponse(true, {vendors: _.map(vendors, row => _.pick(row, "store_name", "store_phone", "longitude", "latitude", "address"))}));
+  res.send(statusResponse(true, {vendors: _.map(vendors, row => _.pick(row, "_id", "store_name", "store_phone", "longitude", "latitude", "address"))}));
 });
 
 router.post("/order", async (req, res) => {
