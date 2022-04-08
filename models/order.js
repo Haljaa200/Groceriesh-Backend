@@ -33,6 +33,7 @@ function validateOrder(order) {
       Joi.object().keys({
         name: Joi.string(),
         price: Joi.number(),
+        photo: Joi.number(),
         unit: Joi.string(),
         quantity: Joi.number(),
       })
