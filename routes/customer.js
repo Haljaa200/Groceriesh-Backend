@@ -92,7 +92,7 @@ router.get("/vendors", auth, async (req, res) => {
 
 
 router.get("/orders", auth, async (req, res) => {
-  let orders = await Order.find();
+  let orders = await Order.find({customer_id: req.user._id});
   res.send(statusResponse(true, {orders: orders}));
 });
 
