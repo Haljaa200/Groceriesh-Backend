@@ -96,6 +96,12 @@ router.get("/orders", auth, async (req, res) => {
   res.send(statusResponse(true, {orders: orders}));
 });
 
+router.get("/orders/:order_id", auth, async (req, res) => {
+  const id = ObjectId(req.params.order_id)
+  let order = await Order.findOne({ _id: id});
+  res.send(statusResponse(true, {order: order}));
+});
+
 router.post("/order", async (req, res) => {
   const { error } = validateOrder(req.body);
   if (error) return res.status(400).send(statusResponse(false, error.details[0].message));
