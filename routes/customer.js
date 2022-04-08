@@ -90,6 +90,12 @@ router.get("/vendors", auth, async (req, res) => {
   res.send(statusResponse(true, {vendors: _.map(vendors, row => _.pick(row, "_id", "store_name", "store_phone", "longitude", "latitude", "address"))}));
 });
 
+
+router.get("/orders", auth, async (req, res) => {
+  let orders = await Order.find();
+  res.send(statusResponse(true, {orders: orders}));
+});
+
 router.post("/order", async (req, res) => {
   const { error } = validateOrder(req.body);
   if (error) return res.status(400).send(statusResponse(false, error.details[0].message));
