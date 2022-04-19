@@ -65,7 +65,12 @@ router.put("/profile", auth, async (req, res) => {
 
 
 
-// ---------- Save, edit and delete item ----------
+// ---------- Get, Save, edit and delete item ----------
+
+router.get("/items", auth, async (req, res) => {
+  let items = await Item.find({ vendor_id: req.user._id });
+  res.send(statusResponse(true, {items: items}));
+});
 
 router.post("/item", auth, async (req, res) => {
   const { error } = validateItem(req.body);
@@ -219,12 +224,6 @@ router.post("/deliver_order/:order_id", async (req, res) => {
   await order.save()
 
   res.send(statusResponse(true, "order delivered."));
-});
-
-
-router.get("/items", auth, async (req, res) => {
-  let items = await Item.find();
-  res.send(statusResponse(true, {items: items}));
 });
 
 router.get("/units", auth, async (req, res) => {
