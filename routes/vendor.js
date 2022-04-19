@@ -213,7 +213,7 @@ router.delete("/category/:id", auth, async (req, res) => {
 
 
 router.get("/orders", auth, async (req, res) => {
-  let orders = await Order.find({vendor_id: req.body.vendor_id});
+  let orders = await Order.find({vendor_id: req.user._id});
   res.send(statusResponse(true, {orders: orders}));
 });
 
