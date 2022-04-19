@@ -72,6 +72,11 @@ router.get("/items", auth, async (req, res) => {
   res.send(statusResponse(true, {items: items}));
 });
 
+router.get("/item/:id", auth, async (req, res) => {
+  let item = await Item.findOne({ _id: req.params.id });
+  res.send(statusResponse(true, {item: item}));
+});
+
 router.post("/item", auth, async (req, res) => {
   const { error } = validateItem(req.body);
   if (error) return res.status(400).send(statusResponse(false, error.details[0].message));
