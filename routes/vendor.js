@@ -90,11 +90,11 @@ router.post("/item", auth, async (req, res) => {
   res.send(statusResponse(true, {item: item}));
 });
 
-router.put("/item", auth, async (req, res) => {
+router.put("/item/:id", auth, async (req, res) => {
   const { error } = validateItem(req.body);
   if (error) return res.status(400).send(statusResponse(false, error.details[0].message));
 
-  let item = await Item.findOne({ _id: req.body._id });
+  let item = await Item.findOne({ _id: req.params.id });
 
   if (!item) return res.status(404).send(statusResponse(false, "Item not found!"));
 
