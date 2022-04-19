@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   customer_id: { type: String, },
+  vendor_id: {  type: String },
   delivery_latitude: { type: Number, },
   delivery_longitude: { type: Number, },
   delivery_address: { type: String, },
@@ -26,6 +27,7 @@ const Order = mongoose.model("Order", schema);
 function validateOrder(order) {
   const schema = Joi.object({
     customer_id: Joi.string(),
+    vendor_id: Joi.string(),
     delivery_latitude: Joi.number(),
     delivery_longitude: Joi.number(),
     delivery_address: Joi.string(),
