@@ -18,7 +18,7 @@ const schema = new mongoose.Schema({
   ],
   total_price: { type: Number, },
   delivery_time_planned: { type: Number, },
-  delivery_time: { type: Number, },
+  delivered: { type: Boolean, default: false },
   notes: { type: String, },
 });
 
@@ -42,7 +42,7 @@ function validateOrder(order) {
     ),
     total_price: Joi.number(),
     delivery_time_planned: Joi.number(),
-    delivery_time: Joi.number(),
+    delivered: Joi.boolean(),
     notes: Joi.string().allow(''),
   });
 

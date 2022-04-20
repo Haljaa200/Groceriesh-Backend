@@ -234,7 +234,7 @@ router.post("/accept_order/:order_id", async (req, res) => {
 
 router.post("/deliver_order/:order_id", async (req, res) => {
   let order = await Order.findOne({ _id: req.params.order_id });
-  order.delivery_time = req.body.delivery_time
+  order.delivered = true
   await order.save()
 
   res.send(statusResponse(true, "order delivered."));
